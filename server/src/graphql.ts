@@ -2,6 +2,7 @@ import {
   GraphQLInt,
   GraphQLNonNull,
   GraphQLObjectType,
+  GraphQLScalarType,
   GraphQLSchema,
   GraphQLString,
 } from "graphql";
@@ -19,6 +20,7 @@ type UploadedFile = {
   id: string;
   filename: string;
   length: number;
+  uploadedAt: Date;
 };
 
 type Database = {
@@ -33,7 +35,7 @@ const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
     const { type, id } = fromGlobalId(globalId);
     if (type !== "files") {
-      throw new Error(`Unknown type: ${type}`)
+      throw new Error(`Unknown type: ${type}`);
     }
     return database[type][id];
   },
@@ -41,6 +43,13 @@ const { nodeInterface, nodeField } = nodeDefinitions(
     return FileType;
   }
 );
+
+const DateTimeType = new GraphQLScalarType({
+  name: "ISO8601DateTime",
+  serialize(date: Date) {
+    return date.toISOString();
+  },
+});
 
 const FileType = new GraphQLObjectType<UploadedFile>({
   name: "File",
@@ -56,6 +65,12 @@ const FileType = new GraphQLObjectType<UploadedFile>({
       type: GraphQLNonNull(GraphQLInt),
       resolve(parent) {
         return parent.length;
+      },
+    },
+    uploadedAt: {
+      type: GraphQLNonNull(DateTimeType),
+      resolve(parent) {
+        return parent.uploadedAt;
       },
     },
   },
@@ -75,6 +90,9 @@ export const schema = new GraphQLSchema({
         type: FileConnection,
         resolve(parent, args) {
           const files = Object.values(database.files);
+
+          // ORDER BY uploadedAt ASC
+          files.sort((a, b) => a.uploadedAt.getTime() - b.uploadedAt.getTime());
           return connectionFromArray(files, args);
         },
       },
@@ -101,7 +119,7 @@ export const schema = new GraphQLSchema({
           }
 
           const id = uuid();
-          const uploadedFile = { id, filename, length };
+          const uploadedFile = { id, filename, length, uploadedAt: new Date() };
           database.files[id] = uploadedFile;
 
           return uploadedFile;

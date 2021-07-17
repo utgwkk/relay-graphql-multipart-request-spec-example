@@ -3,6 +3,7 @@ type File implements Node {
   id: ID!
   filename: String!
   length: Int!
+  uploadedAt: ISO8601DateTime!
 }
 
 """A connection to a list of items."""
@@ -22,6 +23,8 @@ type FileEdge {
   """A cursor for use in pagination"""
   cursor: String!
 }
+
+scalar ISO8601DateTime
 
 type Mutation {
   uploadFile(file: Upload!): File
