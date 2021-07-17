@@ -37,7 +37,7 @@ export const App: React.VFC = () => {
             return null;
           }
 
-          return <FileItem file={edge.node} />;
+          return <FileItem key={i} file={edge.node} />;
         })}
       </ul>
       <hr />
