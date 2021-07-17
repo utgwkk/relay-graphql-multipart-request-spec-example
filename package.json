@@ -8,5 +8,15 @@
   "repository": "https://github.com/utgwkk/relay-graphql-multipart-request-spec-example",
   "author": "utgwkk <utagawakiki@gmail.com>",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "prettier": {
+    "importOrder": [
+      "^[./]"
+    ],
+    "importOrderSeparation": true
+  },
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^2.0.2",
+    "prettier": "^2.3.2"
+  }
 }
