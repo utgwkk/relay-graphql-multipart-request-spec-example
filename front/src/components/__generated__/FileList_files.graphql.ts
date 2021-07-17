@@ -5,10 +5,14 @@
 import { ReaderFragment } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type FileList_files = {
-    readonly files: ReadonlyArray<{
-        readonly filename: string;
-        readonly length: number;
-    }>;
+    readonly files: {
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly filename: string;
+                readonly length: number;
+            } | null;
+        } | null> | null;
+    } | null;
     readonly " $refType": "FileList_files";
 };
 export type FileList_files$data = FileList_files;
@@ -28,23 +32,45 @@ const node: ReaderFragment = {
     {
       "alias": null,
       "args": null,
-      "concreteType": "File",
+      "concreteType": "FileConnection",
       "kind": "LinkedField",
       "name": "files",
-      "plural": true,
+      "plural": false,
       "selections": [
         {
           "alias": null,
           "args": null,
-          "kind": "ScalarField",
-          "name": "filename",
-          "storageKey": null
-        },
-        {
-          "alias": null,
-          "args": null,
-          "kind": "ScalarField",
-          "name": "length",
+          "concreteType": "FileEdge",
+          "kind": "LinkedField",
+          "name": "edges",
+          "plural": true,
+          "selections": [
+            {
+              "alias": null,
+              "args": null,
+              "concreteType": "File",
+              "kind": "LinkedField",
+              "name": "node",
+              "plural": false,
+              "selections": [
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "filename",
+                  "storageKey": null
+                },
+                {
+                  "alias": null,
+                  "args": null,
+                  "kind": "ScalarField",
+                  "name": "length",
+                  "storageKey": null
+                }
+              ],
+              "storageKey": null
+            }
+          ],
           "storageKey": null
         }
       ],
@@ -54,5 +80,5 @@ const node: ReaderFragment = {
   "type": "Query",
   "abstractKey": null
 };
-(node as any).hash = '31c05337f4796f2ea300479bb5b45ea5';
+(node as any).hash = '400543afd65a2fdcef57aafebf315b9d';
 export default node;

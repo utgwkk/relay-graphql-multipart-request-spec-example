@@ -12,8 +12,12 @@ export const FileList: React.VFC<FileListProps> = ({ files }) => {
     graphql`
       fragment FileList_files on Query {
         files {
-          filename
-          length
+          edges {
+            node {
+              filename
+              length
+            }
+          }
         }
       }
     `,
@@ -22,11 +26,19 @@ export const FileList: React.VFC<FileListProps> = ({ files }) => {
 
   return (
     <ul>
-      {fileList.map((file, i) => (
-        <li key={i}>
-          {file.filename} ({file.length} bytes)
-        </li>
-      ))}
+      {(fileList?.edges ?? []).map((edge, i) => {
+        if (!(edge && edge.node)) {
+          return null;
+        }
+
+        const file = edge.node;
+
+        return (
+          <li key={i}>
+            {file.filename} ({file.length} bytes)
+          </li>
+        );
+      })}
     </ul>
   );
 };

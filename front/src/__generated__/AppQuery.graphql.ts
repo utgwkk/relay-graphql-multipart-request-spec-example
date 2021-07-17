@@ -22,8 +22,13 @@ query AppQuery {
 
 fragment FileList_files on Query {
   files {
-    filename
-    length
+    edges {
+      node {
+        filename
+        length
+        id
+      }
+    }
   }
 }
 */
@@ -53,23 +58,52 @@ const node: ConcreteRequest = {
       {
         "alias": null,
         "args": null,
-        "concreteType": "File",
+        "concreteType": "FileConnection",
         "kind": "LinkedField",
         "name": "files",
-        "plural": true,
+        "plural": false,
         "selections": [
           {
             "alias": null,
             "args": null,
-            "kind": "ScalarField",
-            "name": "filename",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "length",
+            "concreteType": "FileEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "File",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "filename",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "length",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
+                    "name": "id",
+                    "storageKey": null
+                  }
+                ],
+                "storageKey": null
+              }
+            ],
             "storageKey": null
           }
         ],
@@ -78,12 +112,12 @@ const node: ConcreteRequest = {
     ]
   },
   "params": {
-    "cacheID": "9c4f963553475b9ac5125702350811b3",
+    "cacheID": "78050e76d62ecbee070fc60534f61a2a",
     "id": null,
     "metadata": {},
     "name": "AppQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  ...FileList_files\n}\n\nfragment FileList_files on Query {\n  files {\n    filename\n    length\n  }\n}\n"
+    "text": "query AppQuery {\n  ...FileList_files\n}\n\nfragment FileList_files on Query {\n  files {\n    edges {\n      node {\n        filename\n        length\n        id\n      }\n    }\n  }\n}\n"
   }
 };
 (node as any).hash = 'b9ddc01012ed5242c598b82c327df787';

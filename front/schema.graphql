@@ -1,14 +1,60 @@
-type File {
+type File implements Node {
+  """The ID of an object"""
+  id: ID!
   filename: String!
   length: Int!
+}
+
+"""A connection to a list of items."""
+type FileConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [FileEdge]
+}
+
+"""An edge in a connection."""
+type FileEdge {
+  """The item at the end of the edge"""
+  node: File
+
+  """A cursor for use in pagination"""
+  cursor: String!
 }
 
 type Mutation {
   uploadFile(file: Upload!): File
 }
 
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
 type Query {
-  files: [File!]!
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+  files: FileConnection
 }
 
 """The `Upload` scalar type represents a file upload."""
