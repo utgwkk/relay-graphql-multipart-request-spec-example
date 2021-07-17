@@ -35,7 +35,7 @@ const FileType = new GraphQLObjectType<UploadedFile>({
 
 export const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
-    name: "RootQueryType",
+    name: "Query",
     fields: {
       files: {
         type: GraphQLNonNull(GraphQLList(GraphQLNonNull(FileType))),
