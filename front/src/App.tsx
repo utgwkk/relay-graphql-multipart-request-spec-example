@@ -2,9 +2,10 @@ import { graphql } from "babel-plugin-relay/macro";
 import React from "react";
 import { loadQuery, usePreloadedQuery } from "react-relay";
 
-import { FileList } from "./components/FileList";
 import RelayEnvironment from "./RelayEnvironment";
 import { AppQuery } from "./__generated__/AppQuery.graphql";
+import { FileList } from "./components/FileList";
+import { UploadForm } from "./components/UploadForm";
 
 const appQuery = graphql`
   query AppQuery {
@@ -21,6 +22,8 @@ export const App: React.VFC = () => {
     <div className="App">
       <h1>Hello, world!</h1>
       <FileList files={data} />
+      <hr />
+      <UploadForm />
     </div>
   );
 };
