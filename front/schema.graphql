@@ -57,7 +57,19 @@ type Query {
     """The ID of an object"""
     id: ID!
   ): Node
-  files: FileConnection
+  files(
+    """Returns the items in the list that come after the specified cursor."""
+    after: String
+
+    """Returns the first n items from the list."""
+    first: Int
+
+    """Returns the items in the list that come before the specified cursor."""
+    before: String
+
+    """Returns the last n items from the list."""
+    last: Int
+  ): FileConnection
 }
 
 """The `Upload` scalar type represents a file upload."""

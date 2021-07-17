@@ -7,6 +7,7 @@ import {
   GraphQLString,
 } from "graphql";
 import {
+  connectionArgs,
   connectionDefinitions,
   connectionFromArray,
   fromGlobalId,
@@ -89,12 +90,13 @@ export const schema = new GraphQLSchema({
       node: nodeField,
       files: {
         type: FileConnection,
-        resolve(parent, args) {
+        args: connectionArgs,
+        resolve(parent, { before, after, first, last }) {
           const files = Object.values(database.files);
 
           // ORDER BY id ASC
           files.sort((a, b) => a.id - b.id);
-          return connectionFromArray(files, args);
+          return connectionFromArray(files, { before, after, first, last });
         },
       },
     },
