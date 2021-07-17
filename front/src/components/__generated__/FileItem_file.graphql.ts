@@ -7,6 +7,7 @@ import { FragmentRefs } from "relay-runtime";
 export type FileItem_file = {
     readonly id: string;
     readonly filename: string;
+    readonly uploadedFilename: string;
     readonly length: number;
     readonly " $refType": "FileItem_file";
 };
@@ -42,6 +43,13 @@ const node: ReaderFragment = {
       "alias": null,
       "args": null,
       "kind": "ScalarField",
+      "name": "uploadedFilename",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
       "name": "length",
       "storageKey": null
     }
@@ -49,5 +57,5 @@ const node: ReaderFragment = {
   "type": "File",
   "abstractKey": null
 };
-(node as any).hash = '783a9b6b1840fcc6ccfbd6409116c328';
+(node as any).hash = 'f5091958fc8c2806c16f2d06d0ce8f08';
 export default node;

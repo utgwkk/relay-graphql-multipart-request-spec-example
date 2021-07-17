@@ -2,6 +2,7 @@ type File implements Node {
   """The ID of an object"""
   id: ID!
   filename: String!
+  uploadedFilename: String!
   length: Int!
   uploadedAt: ISO8601DateTime!
 }

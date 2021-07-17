@@ -13,6 +13,7 @@ export const FileItem: React.VFC<FileItemProps> = ({ file }) => {
       fragment FileItem_file on File {
         id
         filename
+        uploadedFilename
         length
       }
     `,
@@ -21,7 +22,12 @@ export const FileItem: React.VFC<FileItemProps> = ({ file }) => {
 
   return (
     <li>
-      {fileData.filename} ({fileData.length} bytes)
+      <a
+        href={`http://localhost:4000/api/download/${fileData.uploadedFilename}`}
+      >
+        {fileData.filename}
+      </a>{" "}
+      ({fileData.length} bytes)
     </li>
   );
 };

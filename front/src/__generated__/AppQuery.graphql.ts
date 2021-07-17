@@ -43,6 +43,7 @@ query AppQuery {
 fragment FileItem_file on File {
   id
   filename
+  uploadedFilename
   length
 }
 */
@@ -207,6 +208,13 @@ return {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "uploadedFilename",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "length",
                     "storageKey": null
                   },
@@ -235,7 +243,7 @@ return {
     ]
   },
   "params": {
-    "cacheID": "72644e07413d51ce8fb8f2fa1814b724",
+    "cacheID": "f78cd5255145fa7de0e3161ee7a0781f",
     "id": null,
     "metadata": {
       "connection": [
@@ -251,7 +259,7 @@ return {
     },
     "name": "AppQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  files(first: 10) {\n    edges {\n      node {\n        ...FileItem_file\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment FileItem_file on File {\n  id\n  filename\n  length\n}\n"
+    "text": "query AppQuery {\n  files(first: 10) {\n    edges {\n      node {\n        ...FileItem_file\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment FileItem_file on File {\n  id\n  filename\n  uploadedFilename\n  length\n}\n"
   }
 };
 })();

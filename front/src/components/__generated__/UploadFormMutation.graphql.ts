@@ -33,6 +33,7 @@ mutation UploadFormMutation(
 fragment FileItem_file on File {
   id
   filename
+  uploadedFilename
   length
 }
 */
@@ -116,6 +117,13 @@ return {
             "alias": null,
             "args": null,
             "kind": "ScalarField",
+            "name": "uploadedFilename",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
             "name": "length",
             "storageKey": null
           }
@@ -146,12 +154,12 @@ return {
     ]
   },
   "params": {
-    "cacheID": "0b74cfa92798c4d1601708ec89b1e0e1",
+    "cacheID": "4c63f476e51ff7bded8e75ac99d2f97a",
     "id": null,
     "metadata": {},
     "name": "UploadFormMutation",
     "operationKind": "mutation",
-    "text": "mutation UploadFormMutation(\n  $file: Upload!\n) {\n  uploadFile(file: $file) {\n    ...FileItem_file\n    id\n  }\n}\n\nfragment FileItem_file on File {\n  id\n  filename\n  length\n}\n"
+    "text": "mutation UploadFormMutation(\n  $file: Upload!\n) {\n  uploadFile(file: $file) {\n    ...FileItem_file\n    id\n  }\n}\n\nfragment FileItem_file on File {\n  id\n  filename\n  uploadedFilename\n  length\n}\n"
   }
 };
 })();
