@@ -1,3 +1,4 @@
+import { createWriteStream } from "fs";
 import {
   GraphQLInt,
   GraphQLNonNull,
@@ -15,23 +16,9 @@ import {
   nodeDefinitions,
 } from "graphql-relay";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
+import path from "path";
 
-let counter = 0;
-
-type UploadedFile = {
-  id: number;
-  filename: string;
-  length: number;
-  uploadedAt: Date;
-};
-
-type Database = {
-  files: { [id: string]: UploadedFile };
-};
-
-const database: Database = {
-  files: {},
-};
+import { database, UploadedFile, getID } from "./database";
 
 const { nodeInterface, nodeField } = nodeDefinitions(
   (globalId) => {
@@ -61,6 +48,12 @@ const FileType = new GraphQLObjectType<UploadedFile>({
       type: GraphQLNonNull(GraphQLString),
       resolve(parent) {
         return parent.filename;
+      },
+    },
+    uploadedFilename: {
+      type: GraphQLNonNull(GraphQLString),
+      resolve(parent) {
+        return parent.uploadedFilename;
       },
     },
     length: {
@@ -115,15 +108,30 @@ export const schema = new GraphQLSchema({
           const { filename, createReadStream } =
             await (file as Promise<FileUpload>);
 
+          const id = getID();
+          const uploadedFilename = `${id}`;
+
           let length = 0;
           const stream = createReadStream();
+
+          // Upload file content
+          stream.pipe(
+            createWriteStream(
+              path.join(__dirname, "../uploads/", uploadedFilename)
+            )
+          );
+
           for await (const chunk of stream) {
             length += chunk.length;
           }
 
-          const id = counter;
-          counter++;
-          const uploadedFile = { id, filename, length, uploadedAt: new Date() };
+          const uploadedFile = {
+            id,
+            filename,
+            uploadedFilename,
+            length,
+            uploadedAt: new Date(),
+          };
           database.files[id] = uploadedFile;
 
           return uploadedFile;
