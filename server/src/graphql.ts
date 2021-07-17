@@ -14,10 +14,11 @@ import {
   nodeDefinitions,
 } from "graphql-relay";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
-import { v4 as uuid } from "uuid";
+
+let counter = 0;
 
 type UploadedFile = {
-  id: string;
+  id: number;
   filename: string;
   length: number;
   uploadedAt: Date;
@@ -54,7 +55,7 @@ const DateTimeType = new GraphQLScalarType({
 const FileType = new GraphQLObjectType<UploadedFile>({
   name: "File",
   fields: {
-    id: globalIdField(),
+    id: globalIdField<UploadedFile>(),
     filename: {
       type: GraphQLNonNull(GraphQLString),
       resolve(parent) {
@@ -91,8 +92,8 @@ export const schema = new GraphQLSchema({
         resolve(parent, args) {
           const files = Object.values(database.files);
 
-          // ORDER BY uploadedAt ASC
-          files.sort((a, b) => a.uploadedAt.getTime() - b.uploadedAt.getTime());
+          // ORDER BY id ASC
+          files.sort((a, b) => a.id - b.id);
           return connectionFromArray(files, args);
         },
       },
@@ -118,7 +119,8 @@ export const schema = new GraphQLSchema({
             length += chunk.length;
           }
 
-          const id = uuid();
+          const id = counter;
+          counter++;
           const uploadedFile = { id, filename, length, uploadedAt: new Date() };
           database.files[id] = uploadedFile;
 
