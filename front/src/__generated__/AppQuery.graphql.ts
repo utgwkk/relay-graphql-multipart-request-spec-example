@@ -3,12 +3,10 @@
 // @ts-nocheck
 
 import { ConcreteRequest } from "relay-runtime";
+import { FragmentRefs } from "relay-runtime";
 export type AppQueryVariables = {};
 export type AppQueryResponse = {
-    readonly files: ReadonlyArray<{
-        readonly filename: string;
-        readonly length: number;
-    }>;
+    readonly " $fragmentRefs": FragmentRefs<"FileList_files">;
 };
 export type AppQuery = {
     readonly response: AppQueryResponse;
@@ -19,6 +17,10 @@ export type AppQuery = {
 
 /*
 query AppQuery {
+  ...FileList_files
+}
+
+fragment FileList_files on Query {
   files {
     filename
     length
@@ -26,41 +28,19 @@ query AppQuery {
 }
 */
 
-const node: ConcreteRequest = (function(){
-var v0 = [
-  {
-    "alias": null,
-    "args": null,
-    "concreteType": "File",
-    "kind": "LinkedField",
-    "name": "files",
-    "plural": true,
-    "selections": [
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "filename",
-        "storageKey": null
-      },
-      {
-        "alias": null,
-        "args": null,
-        "kind": "ScalarField",
-        "name": "length",
-        "storageKey": null
-      }
-    ],
-    "storageKey": null
-  }
-];
-return {
+const node: ConcreteRequest = {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
     "name": "AppQuery",
-    "selections": (v0/*: any*/),
+    "selections": [
+      {
+        "args": null,
+        "kind": "FragmentSpread",
+        "name": "FileList_files"
+      }
+    ],
     "type": "Query",
     "abstractKey": null
   },
@@ -69,17 +49,42 @@ return {
     "argumentDefinitions": [],
     "kind": "Operation",
     "name": "AppQuery",
-    "selections": (v0/*: any*/)
+    "selections": [
+      {
+        "alias": null,
+        "args": null,
+        "concreteType": "File",
+        "kind": "LinkedField",
+        "name": "files",
+        "plural": true,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "filename",
+            "storageKey": null
+          },
+          {
+            "alias": null,
+            "args": null,
+            "kind": "ScalarField",
+            "name": "length",
+            "storageKey": null
+          }
+        ],
+        "storageKey": null
+      }
+    ]
   },
   "params": {
-    "cacheID": "4ffea11e3341c85d35110c8b16ac5351",
+    "cacheID": "9c4f963553475b9ac5125702350811b3",
     "id": null,
     "metadata": {},
     "name": "AppQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  files {\n    filename\n    length\n  }\n}\n"
+    "text": "query AppQuery {\n  ...FileList_files\n}\n\nfragment FileList_files on Query {\n  files {\n    filename\n    length\n  }\n}\n"
   }
 };
-})();
-(node as any).hash = '9290d108a2a98d419bc2a61c5593fa27';
+(node as any).hash = 'b9ddc01012ed5242c598b82c327df787';
 export default node;
