@@ -1,7 +1,10 @@
 {
   "name": "relay-graphql-multipart-request-spec-example",
   "version": "1.0.0",
-  "main": "index.js",
+  "workspaces": [
+    "front",
+    "server"
+  ],
   "repository": "https://github.com/utgwkk/relay-graphql-multipart-request-spec-example",
   "author": "utgwkk <utagawakiki@gmail.com>",
   "license": "MIT",
