@@ -30,7 +30,7 @@ export const App: React.VFC = () => {
 
   return (
     <div className="App">
-      <h1>Hello, world!</h1>
+      <h1>File uploader</h1>
       <ul>
         {(files?.edges ?? []).map((edge, i) => {
           if (!edge?.node) {
