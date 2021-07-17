@@ -2,7 +2,7 @@ import { graphql } from "babel-plugin-relay/macro";
 import React from "react";
 import { loadQuery, usePreloadedQuery } from "react-relay";
 
-import { FileList } from "./FileList";
+import { FileList } from "./components/FileList";
 import RelayEnvironment from "./RelayEnvironment";
 import { AppQuery } from "./__generated__/AppQuery.graphql";
 
