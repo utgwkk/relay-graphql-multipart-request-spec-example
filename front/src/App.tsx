@@ -4,26 +4,44 @@ import { loadQuery, usePreloadedQuery } from "react-relay";
 
 import RelayEnvironment from "./RelayEnvironment";
 import { AppQuery } from "./__generated__/AppQuery.graphql";
-import { FileList } from "./components/FileList";
+import { FileItem } from "./components/FileItem";
 import { UploadForm } from "./components/UploadForm";
 
 const appQuery = graphql`
   query AppQuery {
-    ...FileList_files
+    files(first: 10) @connection(key: "App_files") {
+      __id
+      edges {
+        node {
+          ...FileItem_file
+        }
+      }
+    }
   }
 `;
 
 const preloadedQuery = loadQuery<AppQuery>(RelayEnvironment, appQuery, {});
 
 export const App: React.VFC = () => {
-  const data = usePreloadedQuery(appQuery, preloadedQuery);
+  const { files } = usePreloadedQuery(appQuery, preloadedQuery);
+  if (!files) {
+    return null;
+  }
 
   return (
     <div className="App">
       <h1>Hello, world!</h1>
-      <FileList files={data} />
+      <ul>
+        {(files?.edges ?? []).map((edge, i) => {
+          if (!edge?.node) {
+            return null;
+          }
+
+          return <FileItem file={edge.node} />;
+        })}
+      </ul>
       <hr />
-      <UploadForm />
+      <UploadForm connections={[files.__id]} />
     </div>
   );
 };

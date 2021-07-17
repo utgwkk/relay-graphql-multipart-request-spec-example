@@ -6,7 +6,14 @@ import { ConcreteRequest } from "relay-runtime";
 import { FragmentRefs } from "relay-runtime";
 export type AppQueryVariables = {};
 export type AppQueryResponse = {
-    readonly " $fragmentRefs": FragmentRefs<"FileList_files">;
+    readonly files: {
+        readonly __id: string;
+        readonly edges: ReadonlyArray<{
+            readonly node: {
+                readonly " $fragmentRefs": FragmentRefs<"FileItem_file">;
+            } | null;
+        } | null> | null;
+    } | null;
 };
 export type AppQuery = {
     readonly response: AppQueryResponse;
@@ -17,23 +24,89 @@ export type AppQuery = {
 
 /*
 query AppQuery {
-  ...FileList_files
-}
-
-fragment FileList_files on Query {
-  files {
+  files(first: 10) {
     edges {
       node {
-        filename
-        length
+        ...FileItem_file
         id
+        __typename
       }
+      cursor
+    }
+    pageInfo {
+      endCursor
+      hasNextPage
     }
   }
 }
+
+fragment FileItem_file on File {
+  id
+  filename
+  length
+}
 */
 
-const node: ConcreteRequest = {
+const node: ConcreteRequest = (function(){
+var v0 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "__typename",
+  "storageKey": null
+},
+v1 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "cursor",
+  "storageKey": null
+},
+v2 = {
+  "alias": null,
+  "args": null,
+  "concreteType": "PageInfo",
+  "kind": "LinkedField",
+  "name": "pageInfo",
+  "plural": false,
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "endCursor",
+      "storageKey": null
+    },
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "hasNextPage",
+      "storageKey": null
+    }
+  ],
+  "storageKey": null
+},
+v3 = {
+  "kind": "ClientExtension",
+  "selections": [
+    {
+      "alias": null,
+      "args": null,
+      "kind": "ScalarField",
+      "name": "__id",
+      "storageKey": null
+    }
+  ]
+},
+v4 = [
+  {
+    "kind": "Literal",
+    "name": "first",
+    "value": 10
+  }
+];
+return {
   "fragment": {
     "argumentDefinitions": [],
     "kind": "Fragment",
@@ -41,9 +114,46 @@ const node: ConcreteRequest = {
     "name": "AppQuery",
     "selections": [
       {
+        "alias": "files",
         "args": null,
-        "kind": "FragmentSpread",
-        "name": "FileList_files"
+        "concreteType": "FileConnection",
+        "kind": "LinkedField",
+        "name": "__App_files_connection",
+        "plural": false,
+        "selections": [
+          {
+            "alias": null,
+            "args": null,
+            "concreteType": "FileEdge",
+            "kind": "LinkedField",
+            "name": "edges",
+            "plural": true,
+            "selections": [
+              {
+                "alias": null,
+                "args": null,
+                "concreteType": "File",
+                "kind": "LinkedField",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  (v0/*: any*/),
+                  {
+                    "args": null,
+                    "kind": "FragmentSpread",
+                    "name": "FileItem_file"
+                  }
+                ],
+                "storageKey": null
+              },
+              (v1/*: any*/)
+            ],
+            "storageKey": null
+          },
+          (v2/*: any*/),
+          (v3/*: any*/)
+        ],
+        "storageKey": null
       }
     ],
     "type": "Query",
@@ -57,7 +167,7 @@ const node: ConcreteRequest = {
     "selections": [
       {
         "alias": null,
-        "args": null,
+        "args": (v4/*: any*/),
         "concreteType": "FileConnection",
         "kind": "LinkedField",
         "name": "files",
@@ -83,6 +193,13 @@ const node: ConcreteRequest = {
                     "alias": null,
                     "args": null,
                     "kind": "ScalarField",
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "alias": null,
+                    "args": null,
+                    "kind": "ScalarField",
                     "name": "filename",
                     "storageKey": null
                   },
@@ -93,32 +210,50 @@ const node: ConcreteRequest = {
                     "name": "length",
                     "storageKey": null
                   },
-                  {
-                    "alias": null,
-                    "args": null,
-                    "kind": "ScalarField",
-                    "name": "id",
-                    "storageKey": null
-                  }
+                  (v0/*: any*/)
                 ],
                 "storageKey": null
-              }
+              },
+              (v1/*: any*/)
             ],
             "storageKey": null
-          }
+          },
+          (v2/*: any*/),
+          (v3/*: any*/)
         ],
-        "storageKey": null
+        "storageKey": "files(first:10)"
+      },
+      {
+        "alias": null,
+        "args": (v4/*: any*/),
+        "filters": null,
+        "handle": "connection",
+        "key": "App_files",
+        "kind": "LinkedHandle",
+        "name": "files"
       }
     ]
   },
   "params": {
-    "cacheID": "78050e76d62ecbee070fc60534f61a2a",
+    "cacheID": "72644e07413d51ce8fb8f2fa1814b724",
     "id": null,
-    "metadata": {},
+    "metadata": {
+      "connection": [
+        {
+          "count": null,
+          "cursor": null,
+          "direction": "forward",
+          "path": [
+            "files"
+          ]
+        }
+      ]
+    },
     "name": "AppQuery",
     "operationKind": "query",
-    "text": "query AppQuery {\n  ...FileList_files\n}\n\nfragment FileList_files on Query {\n  files {\n    edges {\n      node {\n        filename\n        length\n        id\n      }\n    }\n  }\n}\n"
+    "text": "query AppQuery {\n  files(first: 10) {\n    edges {\n      node {\n        ...FileItem_file\n        id\n        __typename\n      }\n      cursor\n    }\n    pageInfo {\n      endCursor\n      hasNextPage\n    }\n  }\n}\n\nfragment FileItem_file on File {\n  id\n  filename\n  length\n}\n"
   }
 };
-(node as any).hash = 'b9ddc01012ed5242c598b82c327df787';
+})();
+(node as any).hash = 'ab236cf2d55e2a1eb0b6d4b28304d5ed';
 export default node;

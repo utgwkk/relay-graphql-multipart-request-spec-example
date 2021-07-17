@@ -3,7 +3,11 @@ import React, { useCallback, useRef } from "react";
 import { useRelayEnvironment } from "react-relay";
 import { commitMutation } from "relay-runtime";
 
-export const UploadForm: React.VFC = () => {
+type UploadFormProps = {
+  connections: string[];
+};
+
+export const UploadForm: React.VFC<UploadFormProps> = ({ connections }) => {
   const environment = useRelayEnvironment();
   const ref = useRef<HTMLInputElement>(null);
 
@@ -21,19 +25,21 @@ export const UploadForm: React.VFC = () => {
 
       commitMutation(environment, {
         mutation: graphql`
-          mutation UploadFormMutation($file: Upload!) {
-            uploadFile(file: $file) {
-              filename
+          mutation UploadFormMutation($connections: [ID!]!, $file: Upload!) {
+            uploadFile(file: $file)
+              @appendNode(connections: $connections, edgeTypeName: "FileEdge") {
+              ...FileItem_file
             }
           }
         `,
         variables: {
           file: null,
+          connections,
         },
         uploadables,
       });
     },
-    [environment]
+    [connections, environment]
   );
 
   return (
